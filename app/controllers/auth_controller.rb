@@ -9,8 +9,8 @@ class AuthController < ApplicationController
 
   def authorize
     session[:code_verifier] = generate_code_verifier
-    @code_challenge = generate_code_challenge(session[:code_verifier])
-    redirect_to "https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=#{@client_id}&code_challenge=#{@code_challenge}", allow_other_host: true
+    session[:code_challenge] = session[:code_verifier]
+    redirect_to "https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=#{@client_id}&code_challenge=#{session[:code_challenge]}", allow_other_host: true
     Rails.logger.debug("Code verifier: #{session[:code_verifier]}")
   end
 
@@ -34,6 +34,9 @@ class AuthController < ApplicationController
     Rails.logger.debug("Authorization Server Response: #{response.body}")
     Rails.logger.debug("Access Token: #{token['access_token']}")
     Rails.logger.debug("Refresh Token: #{token['refresh_token']}")
+
+    # Redirect to the index page with the access token and refresh token as query parameters
+    redirect_to anime_path(access_token: token['access_token'], refresh_token: token['refresh_token'])
   end
 
   private

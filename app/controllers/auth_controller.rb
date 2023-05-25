@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'net/http'
 require 'json'
 require 'cgi'
 require 'base64'
-require_relative './../../lib/pkce_generator.rb'
+require_relative './../../lib/pkce_generator'
 
 class AuthController < ApplicationController
   before_action :set_client_id
@@ -10,7 +12,8 @@ class AuthController < ApplicationController
   def authorize
     session[:code_verifier] = generate_code_verifier
     session[:code_challenge] = session[:code_verifier]
-    redirect_to "https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=#{@client_id}&code_challenge=#{session[:code_challenge]}", allow_other_host: true
+    redirect_to "https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=#{@client_id}&code_challenge=#{session[:code_challenge]}",
+                allow_other_host: true
     Rails.logger.debug("Code verifier: #{session[:code_verifier]}")
   end
 

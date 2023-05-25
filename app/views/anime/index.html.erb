@@ -1,3 +1,14 @@
 <h1>Anime List</h1>
-<%= params %>
-<%= @authorization_code %>
+
+<% @anime_list_data.each do |anime| %>
+  <div>
+    <h2><%= anime['node']['title'] %></h2>
+    <img src="<%= anime['node']['main_picture']['large'] %>" alt="<%= anime['node']['title'] %>">
+    <p>Status: <%= anime['list_status']['status'] %></p>
+    <p>Score: <%= anime['list_status']['score'] %></p>
+    <p>Episodes Watched: <%= anime['list_status']['num_episodes_watched'] %></p>
+    <p>Is Rewatching: <%= anime['list_status']['is_rewatching'] %></p>
+    <p>Updated At: <%= anime['list_status']['updated_at'] %></p>
+    <p>Finish Date: <%= anime['list_status']['finish_date'] %></p>
+  </div>
+<% end %>

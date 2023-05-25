@@ -1,6 +1,11 @@
 class AnimeController < ApplicationController
   def index
-    response = HTTParty.get('https://api.myanimelist.net/v2/anime?q=Naruto')
-    @anime = response.parsed_response
+    access_token = params[:access_token]
+    refresh_token = params[:refresh_token]
+
+    # Use the access_token and refresh_token to make API calls on behalf of the user
+    # Fetch the anime list, process the data, and pass it to the view
   end
+
+  # Other actions and code
 end

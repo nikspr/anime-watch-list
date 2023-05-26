@@ -14,8 +14,9 @@ class AuthController < ApplicationController
     session[:code_challenge] = session[:code_verifier]
     redirect_to "https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=#{@client_id}&code_challenge=#{session[:code_challenge]}",
                 allow_other_host: true
-    Rails.logger.debug("Code verifier: #{session[:code_verifier]}")
   end
+
+  def error; end
 
   def callback
     uri = URI('https://myanimelist.net/v1/oauth2/token')
@@ -32,29 +33,29 @@ class AuthController < ApplicationController
     )
 
     response = http.request(request)
-    token = JSON.parse(response.body)
-
-    Rails.logger.debug("Authorization Server Response: #{response.body}")
-    Rails.logger.debug("Access Token: #{token['access_token']}")
-    Rails.logger.debug("Refresh Token: #{token['refresh_token']}")
-
-    # Redirect to the index page with the access token and refresh token as query parameters
-    redirect_to anime_path(access_token: token['access_token'], refresh_token: token['refresh_token'])
+    if response.code.to_i == 200
+      token = JSON.parse(response.body)
+      session[:access_token] = token['access_token']
+      session[:refresh_token] = token['refresh_token']
+      redirect_to anime_path
+    else
+      error_message = JSON.parse(response.body)['error_description']
+      redirect_to error_path, alert: "Authentication failed: #{error_message}"
+    end
   end
 
   private
 
+  def access_token
+    session[:access_token]
+  end
+
+  def refresh_token
+    session[:refresh_token]
+  end
+
   def set_client_id
     @client_id = ENV['MAL_CLIENT_ID']
     @client_secret = ENV['MAL_CLIENT_SECRET']
-    # config_file = Rails.root.join('config', 'application.yml')
-    # config = YAML.load_file(config_file)
-    # @client_id = config['mal']['client_id']
-    # @client_secret = config['mal']['client_secret']
-
-    # @client_id = '2aea40e275bb5dd357450a98a120c3f9'
-    # @client_secret = '24c2b43cd422dbe9c1a35a27a1e464426ba0f1c9ce516dc24f35bdc97038736a'
-    # # @client_id = '6be21ec23d0ae17c9e20912aac6804b4'
-    # @client_secret = '050f45234aaeeea61bb5a1fec6a496141fea37c680781602d88ac1819a398d73'
   end
 end

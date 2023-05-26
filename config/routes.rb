@@ -8,4 +8,6 @@ Rails.application.routes.draw do
 
   get '/anime', to: 'anime#index', as: 'anime'
   get '/manga', to: 'manga#index', as: 'manga'
+
+  get '/error', to: 'auth#error', as: 'error'
 end

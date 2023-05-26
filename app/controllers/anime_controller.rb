@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AnimeController < ApplicationController
-  PER_PAGE = 10
+  PER_PAGE = 12
 
   def index
     page = params[:page].to_i

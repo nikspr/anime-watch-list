@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: redirect('https://www.niklaspringer.xyz')
+  root to: 'home#index'
 
   get '/authorize', to: 'auth#authorize'
   get '/callback', to: 'auth#callback'

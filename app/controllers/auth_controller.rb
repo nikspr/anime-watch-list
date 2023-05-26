@@ -45,7 +45,9 @@ class AuthController < ApplicationController
   private
 
   def set_client_id
-    @client_id = '2aea40e275bb5dd357450a98a120c3f9'
-    @client_secret = '24c2b43cd422dbe9c1a35a27a1e464426ba0f1c9ce516dc24f35bdc97038736a'
+    @client_id = '6be21ec23d0ae17c9e20912aac6804b4'
+    @client_secret = '050f45234aaeeea61bb5a1fec6a496141fea37c680781602d88ac1819a398d73'
+    # @client_id = '2aea40e275bb5dd357450a98a120c3f9'
+    # @client_secret = '24c2b43cd422dbe9c1a35a27a1e464426ba0f1c9ce516dc24f35bdc97038736a'
   end
 end

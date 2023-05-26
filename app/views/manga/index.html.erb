@@ -1,14 +1,47 @@
-<h1>Manga List</h1>
-<p><%= link_to 'View Manga List', manga_path(access_token: @access_token, refresh_token: @refresh_token) %></p>
-<% @manga_list_data.each do |manga| %>
-  <div>
-    <h2><%= manga['node']['title'] %></h2>
-    <img src="<%= manga['node']['main_picture']['large'] %>" alt="<%= manga['node']['title'] %>">
-    <p>Status: <%= manga['list_status']['status'] %></p>
-    <p>Score: <%= manga['list_status']['score'] %></p>
-    <p>Chapters Read: <%= manga['list_status']['num_chapters_read'] %></p>
-    <p>Is Rereading: <%= manga['list_status']['is_rereading'] %></p>
-    <p>Updated At: <%= manga['list_status']['updated_at'] %></p>
-    <p>Finish Date: <%= manga['list_status']['finish_date'] %></p>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between mt-4">
+    <%= link_to 'Previous page', manga_path(page: params[:page].to_i - 1), class: 'btn btn-primary' if params[:page].to_i > 0 %>
+    <%= link_to 'Next page', manga_path(page: params[:page].to_i + 1), class: 'btn btn-primary' %>
   </div>
-<% end %>
+  <div class="row">
+    <% @manga_info_data.each do |manga| %>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow rounded">
+          <img class="card-img-top" src="<%= manga['main_picture']['large'] %>" alt="<%= manga['title'] %>">
+          <div class="card-body">
+            <h5 class="card-title"><%= manga['title'] %></h5>
+            <p class="card-text text-truncate" style="max-height: 7em; overflow: hidden;"><%= manga['synopsis'] %></p>
+            <p class="card-text">Score: <%= manga['my_list_status']['score'] %></p>
+            <p class="card-text">Average Rating: <%= manga['mean'] %></p>
+            <p class="card-text">Year: <%= Date.parse(manga['start_date']).year %></p>
+            <p class="card-text">
+              Genres:
+              <% manga['genres'].each do |genre| %>
+                <span class="badge badge-dark"><%= genre['name'] %></span>
+              <% end %>
+            </p>
+            <p class="card-text">
+              Authors:
+              <% manga['authors'].each do |author| %>
+                <span class="badge badge-dark"><%= author['first_name'] %> <%= author['last_name'] %></span>
+              <% end %>
+            </p>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+              </div>
+              <small class="text-muted"><%= manga['status'] %></small>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="d-flex justify-content-between mt-4">
+    <%= link_to 'Previous page', manga_path(page: params[:page].to_i - 1), class: 'btn btn-primary' if params[:page].to_i > 0 %>
+    <%= link_to 'Next page', manga_path(page: params[:page].to_i + 1), class: 'btn btn-primary' %>
+  </div>
+</div>

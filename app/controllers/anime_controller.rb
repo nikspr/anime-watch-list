@@ -2,7 +2,6 @@
 
 class AnimeController < ApplicationController
   PER_PAGE = 12
-
   def index
     page = params[:page].to_i
     offset = page * PER_PAGE
@@ -64,7 +63,6 @@ class AnimeController < ApplicationController
 
       request = Net::HTTP::Get.new(url)
 
-      # Add any necessary headers, such as authorization if required
       request['Authorization'] = "Bearer #{session[:access_token]}"
 
       response = http.request(request)

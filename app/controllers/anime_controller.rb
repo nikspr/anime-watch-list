@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AnimeController < ApplicationController
   def index
     url = URI.parse('https://api.myanimelist.net/v2/users/@me/animelist')
@@ -8,6 +10,7 @@ class AnimeController < ApplicationController
     per_page = 100
     offset = 0
     @anime_list_data = []
+    @anime_info_data = [] # Add this line to initialize @anime_info_data
 
     begin
       loop do
@@ -26,14 +29,20 @@ class AnimeController < ApplicationController
           offset += per_page
         else
           error_message = JSON.parse(response.body)['error_description']
-          raise StandardError, "Failed to fetch anime list: #{error_message}"
+          flash[:alert] = "Failed to fetch anime list: #{error_message}" # Use flash[:alert] instead of redirecting
+          break # Break the loop if an error occurs
         end
       end
     rescue StandardError => e
-      Rails.logger.error("Error occurred in AnimeController#index: #{e.message}")
-      e.backtrace.each { |trace| Rails.logger.error(trace) }
-      redirect_to error_path, alert: "An error occurred while fetching anime list. Please try again later."
-      return
+      flash[:alert] = "An error occurred: #{e.message}" # Use flash[:alert] instead of redirecting
+    end
+
+    @anime_list_data.each do |anime|
+      anime_id = anime['node']['id']
+      anime_info = get_anime_info(anime_id)
+
+      # Add the detailed anime information to the array
+      @anime_info_data << anime_info if anime_info
     end
   end
 
@@ -53,9 +62,30 @@ class AnimeController < ApplicationController
     end
 
     response = http.request(request)
-    unless response.code == '200'
-      raise StandardError, "API request failed with status code #{response.code}"
-    end
+    raise StandardError, "API request failed with status code #{response.code}" unless response.code == '200'
+
     response
+  end
+
+  def get_anime_info(anime_id)
+    url = URI.parse("https://api.myanimelist.net/v2/anime/#{anime_id}?fields=id,title")
+
+    http = Net::HTTP.new(url.host, url.port)
+    http.use_ssl = true
+
+    request = Net::HTTP::Get.new(url)
+
+    # Add any necessary headers, such as authorization if required
+    request['Authorization'] = "Bearer #{session[:access_token]}"
+
+    response = http.request(request)
+
+    if response.code.to_i == 200
+      JSON.parse(response.body)
+      # Process and use the anime data as needed
+    else
+      # Handle error case
+      nil
+    end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MangaController < ApplicationController
   def index
     @access_token = params[:access_token]

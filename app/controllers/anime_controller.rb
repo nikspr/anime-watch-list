@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AnimeController < ApplicationController
   def index
     @access_token = params[:access_token]

@@ -25,12 +25,15 @@ class MangaController < ApplicationController
         manga_id = manga['node']['id']
         get_manga_info(manga_id)
       end.compact
+
+      total_items = manga_list['paging']['total_items'].to_f
+      @total_pages = (total_items / PER_PAGE).ceil
     else
       error_message = JSON.parse(response.body)['error_description']
       flash[:alert] = "Failed to fetch manga list: #{error_message}"
     end
   rescue StandardError => e
-    flash[:alert] = "An error occured: #{e.message}"
+    flash[:alert] = "An error occurred: #{e.message}"
   end
 
   private
@@ -69,7 +72,7 @@ class MangaController < ApplicationController
 
       if response.code.to_i == 200
         JSON.parse(response.body)
-      # Process and use the anime data as needed
+        # Process and use the manga data as needed
       else
         # Handle error case
         nil

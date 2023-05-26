@@ -44,10 +44,8 @@ class MangaController < ApplicationController
 
     response = http.request(request)
 
-    if response.code == '200'
-      response
-    else
-      raise "Failed to make API call: #{response.body}"
-    end
+    raise "Failed to make API call: #{response.body}" unless response.code == '200'
+
+    response
   end
 end

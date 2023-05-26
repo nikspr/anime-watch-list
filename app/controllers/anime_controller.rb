@@ -68,7 +68,7 @@ class AnimeController < ApplicationController
   end
 
   def get_anime_info(anime_id)
-    url = URI.parse("https://api.myanimelist.net/v2/anime/#{anime_id}?fields=id,title")
+    url = URI.parse("https://api.myanimelist.net/v2/anime/#{anime_id}?fields=id,title,main_picture,start_date,end_date,synopsis,mean,rank,media_type,status,genres,my_list_status,rating")
 
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true

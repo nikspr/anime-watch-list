@@ -1,5 +1,25 @@
-<h1>Welcome to My Anime List</h1>
-<p>This is the home page of your application.</p>
-<p>You can add a welcome message or any other content here.</p>
+<div class="jumbotron jumbotron-fluid text-center bg-primary text-white">
+  <div class="container">
+    <h1 class="display-4">Welcome to NIKLAAAAAS!</h1>
+    <p class="lead">Your one-stop platform for managing and discovering anime and manga.</p>
+    <hr class="my-4">
+    <p>Click the button below to get started.</p>
+    <%= link_to 'Start', authorize_path, class: 'button-56', role: 'button' %>
 
-<%= link_to 'Authorize', authorize_path %>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+      <h2>Anime</h2>
+      <p>Explore a vast collection of anime titles. From the classics to the latest releases, find your next favorite anime here.</p>
+      <img src="https://cdn.discordapp.com/attachments/1105433122998325278/1110953016066060308/niklas_pikachu_writing_code_d275dfba-2cce-414c-b63a-48520f350c99.png" alt="Anime Image" class="img-fluid rounded">
+    </div>
+    <div class="col-lg-6">
+      <h2>Manga</h2>
+      <p>Dive into the world of manga. Whether you're into action, romance, or horror, we've got something for everyone.</p>
+      <img src="https://cdn.discordapp.com/attachments/1105433122998325278/1110953009208369252/niklas_pikachu_writing_code_aebe84be-7a0a-45b2-bbeb-997953f0f75e.png" alt="Manga Image" class="img-fluid rounded">
+    </div>
+  </div>
+</div>

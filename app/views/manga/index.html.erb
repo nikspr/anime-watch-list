@@ -1,0 +1,14 @@
+<h1>Manga List</h1>
+<p><%= link_to 'View Manga List', manga_path(access_token: @access_token, refresh_token: @refresh_token) %></p>
+<% @manga_list_data.each do |manga| %>
+  <div>
+    <h2><%= manga['node']['title'] %></h2>
+    <img src="<%= manga['node']['main_picture']['large'] %>" alt="<%= manga['node']['title'] %>">
+    <p>Status: <%= manga['list_status']['status'] %></p>
+    <p>Score: <%= manga['list_status']['score'] %></p>
+    <p>Chapters Read: <%= manga['list_status']['num_chapters_read'] %></p>
+    <p>Is Rereading: <%= manga['list_status']['is_rereading'] %></p>
+    <p>Updated At: <%= manga['list_status']['updated_at'] %></p>
+    <p>Finish Date: <%= manga['list_status']['finish_date'] %></p>
+  </div>
+<% end %>

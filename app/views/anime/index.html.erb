@@ -1,5 +1,5 @@
 <h1>Anime List</h1>
-
+<p><%= link_to 'View Manga List', manga_path(access_token: @access_token, refresh_token: @refresh_token) %></p>
 <% @anime_list_data.each do |anime| %>
   <div>
     <h2><%= anime['node']['title'] %></h2>

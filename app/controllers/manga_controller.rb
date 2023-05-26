@@ -1,15 +1,15 @@
-class AnimeController < ApplicationController
+class MangaController < ApplicationController
   def index
     @access_token = params[:access_token]
     @refresh_token = params[:refresh_token]
-    url = URI.parse('https://api.myanimelist.net/v2/users/@me/animelist')
+    url = URI.parse('https://api.myanimelist.net/v2/users/@me/mangalist')
     headers = {
       'Authorization' => "Bearer #{@access_token}"
     }
 
     per_page = 100
     offset = 0
-    @anime_list_data = []
+    @manga_list_data = []
 
     loop do
       params = {
@@ -19,10 +19,10 @@ class AnimeController < ApplicationController
       }
 
       response = make_api_call(url, headers, params)
-      anime_list = JSON.parse(response.body)
-      break if anime_list['data'].empty?
+      manga_list = JSON.parse(response.body)
+      break if manga_list['data'].empty?
 
-      @anime_list_data.concat(anime_list['data'])
+      @manga_list_data.concat(manga_list['data'])
       offset += per_page
     end
   end

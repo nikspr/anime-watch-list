@@ -1,7 +1,7 @@
 <div class="container mt-4">
-  <div class="d-flex justify-content-between mt-4">
-    <%= link_to 'Previous page', manga_path(page: params[:page].to_i - 1), class: 'btn btn-primary' if params[:page].to_i > 0 %>
-    <%= link_to 'Next page', manga_path(page: params[:page].to_i + 1), class: 'btn btn-primary' %>
+  <div class="d-flex justify-content-between mt-2 mb-5 rounded">
+    <%= link_to 'Previous page', manga_path(page: params[:page].to_i - 1), class: 'btn btn-dark' if params[:page].to_i > 0 %>
+    <%= link_to 'Next page', manga_path(page: params[:page].to_i + 1), class: 'btn btn-dark' %>
   </div>
   <div class="row">
     <% @manga_info_data.each do |manga| %>
@@ -11,19 +11,19 @@
           <div class="card-body">
             <h5 class="card-title"><%= manga['title'] %></h5>
             <p class="card-text text-truncate" style="max-height: 7em; overflow: hidden;"><%= manga['synopsis'] %></p>
-            <p class="card-text">Score: <%= manga['my_list_status']['score'] %></p>
+            <p class="card-text">Niklas' Score: <%= manga['my_list_status']['score'] %></p>
             <p class="card-text">Average Rating: <%= manga['mean'] %></p>
-            <p class="card-text">Year: <%= Date.parse(manga['start_date']).year %></p>
+            <p class="card-text">First Published: <%= Date.parse(manga['start_date']).year %></p>
             <p class="card-text">
-              Genres:
-              <% manga['genres'].each do |genre| %>
-                <span class="badge badge-dark"><%= genre['name'] %></span>
+              Mangaka:
+              <% manga['authors'].each do |author| %>
+                <%= "#{author['node']['first_name']} #{author['node']['last_name']}" %>
               <% end %>
             </p>
             <p class="card-text">
-              Authors:
-              <% manga['authors'].each do |author| %>
-                <span class="badge badge-dark"><%= author['first_name'] %> <%= author['last_name'] %></span>
+              Genres:
+              <% manga['genres'].each do |genre| %>
+                <span class="badge custom-badge"><%= genre['name'] %></span>
               <% end %>
             </p>
           </div>
@@ -40,8 +40,8 @@
       </div>
     <% end %>
   </div>
-  <div class="d-flex justify-content-between mt-4">
-    <%= link_to 'Previous page', manga_path(page: params[:page].to_i - 1), class: 'btn btn-primary' if params[:page].to_i > 0 %>
-    <%= link_to 'Next page', manga_path(page: params[:page].to_i + 1), class: 'btn btn-primary' %>
+  <div class="d-flex justify-content-between mt-2 mb-5 rounded">
+    <%= link_to 'Previous page', manga_path(page: params[:page].to_i - 1), class: 'btn btn-dark' if params[:page].to_i > 0 %>
+    <%= link_to 'Next page', manga_path(page: params[:page].to_i + 1), class: 'btn btn-dark' %>
   </div>
 </div>

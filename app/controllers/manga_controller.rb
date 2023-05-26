@@ -3,7 +3,7 @@
 class MangaController < ApplicationController
   PER_PAGE = 12
   def index
-    page = params[:page]
+    page = params[:page].to_i
     offset = page * PER_PAGE
 
     url = URI.parse('https://api.myanimelist.net/v2/users/@me/mangalist')
@@ -13,7 +13,7 @@ class MangaController < ApplicationController
 
     params = {
       'fields' => 'list_status',
-      'limit' => per_page,
+      'limit' => PER_PAGE,
       'offset' => offset
     }
 
@@ -21,7 +21,7 @@ class MangaController < ApplicationController
     if response.code.to_i == 200
       manga_list = JSON.parse(response.body)
 
-      @manga_info_data = manga_list['data'].map do |_anime|
+      @manga_info_data = manga_list['data'].map do |manga|
         manga_id = manga['node']['id']
         get_manga_info(manga_id)
       end.compact
@@ -30,7 +30,7 @@ class MangaController < ApplicationController
       flash[:alert] = "Failed to fetch manga list: #{error_message}"
     end
   rescue StandardError => e
-    flash[:alert] = "An error occured: #{error_message}}"
+    flash[:alert] = "An error occured: #{e.message}"
   end
 
   private
